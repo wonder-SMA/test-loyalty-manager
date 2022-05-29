@@ -1,0 +1,49 @@
+.custom-link {
+	margin-left: 16px;
+	cursor: pointer;
+	
+	.link {
+		border-bottom: 2px white solid;
+	}
+	
+	.arrow-left, .arrow-right {
+		display: none;
+	}
+}
+
+@media screen and (max-width: 575px) {
+	.custom-link {
+		position: relative;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 200px;
+		height: 60px;
+		margin: 4px 0;
+		padding: 6px;
+		border: 2px solid white;
+		border-radius: 8px;
+		
+		.link {
+			text-align: center;
+			border-bottom: none;
+		}
+		
+		@mixin arrow {
+			display: block;
+			position: absolute;
+			font-size: 28px;
+			color: white;
+		}
+		
+		.arrow-left {
+			@include arrow;
+			left: -20px;
+		}
+		
+		.arrow-right {
+			@include arrow;
+			right: -20px;
+		}
+	}
+}

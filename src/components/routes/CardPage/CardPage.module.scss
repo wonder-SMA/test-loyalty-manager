@@ -1,0 +1,55 @@
+.card-page {
+	padding-top: 4px;
+	
+	& > div {
+		width: 80%;
+		margin: 0 auto;
+		
+		.back-button {
+			margin: 4px 0;
+		}
+	}
+	
+	h1 {
+		text-align: center;
+	}
+	
+	.date-picker-wrapper {
+		display: flex;
+		justify-content: space-evenly;
+		align-items: flex-end;
+		padding-bottom: 4px;
+	}
+}
+
+@media screen and (max-width: 767px) {
+	.date-picker-wrapper {
+		position: relative;
+	}
+	
+	.date-picker-wrapper > button:nth-child(1),
+	.date-picker-wrapper > button:nth-child(3) {
+		position: absolute;
+		top: 102px;
+	}
+	
+	.date-picker-wrapper > button:nth-child(1) {
+		left: 0;
+	}
+	
+	.date-picker-wrapper > button:nth-child(3) {
+		right: 0;
+	}
+	
+	.card-page > h1:nth-child(7) {
+		margin-top: 55px;
+	}
+	
+	.card-page ul {
+		margin-top: 39px;
+	}
+	
+	.card-page ul > li:last-child {
+		position: absolute;
+	}
+}
