@@ -1,14 +1,11 @@
 import React, { useState } from 'react';
 
 import Button from '../ui/Button';
-import { getTimestamp } from '../utils/functions';
 import classes from './DatePicker.module.scss';
 
-const DatePicker = ({ uuid, setIsFiltered, setForPeriod }) => {
+const DatePicker = ({ handleFilter, handleClear }) => {
   const [startDate, setStartDate] = useState('');
-  const [prevStartDate, setPrevStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
-  const [prevEndDate, setPrevEndDate] = useState('');
 
   const handleStartDate = (value) => {
     setStartDate(value);
@@ -18,22 +15,16 @@ const DatePicker = ({ uuid, setIsFiltered, setForPeriod }) => {
     setEndDate(value);
   };
 
-  const handleSearch = (event) => {
+  const handleFilterDate = (event) => {
     event.preventDefault();
-    if ((!startDate || !endDate) || (startDate === prevStartDate && endDate === prevEndDate)) {
-      return;
-    }
-    setPrevStartDate(startDate);
-    setPrevEndDate(endDate);
-    setForPeriod(getTimestamp(startDate), getTimestamp(endDate), uuid);
-    setIsFiltered(true);
+    handleFilter([startDate, endDate]);
   };
 
-  const handleClear = (event) => {
+  const handleClearDate = (event) => {
     event.preventDefault();
     setStartDate('');
     setEndDate('');
-    setIsFiltered(false);
+    handleClear();
   };
 
   return (
@@ -55,8 +46,8 @@ const DatePicker = ({ uuid, setIsFiltered, setForPeriod }) => {
           />
         </div>
         <div className={classes['form-buttons']}>
-          <Button onClick={handleSearch}>Поиск</Button>
-          <Button onClick={handleClear}>Очистить</Button>
+          <Button onClick={handleFilterDate}>Показать</Button>
+          <Button onClick={handleClearDate}>Очистить</Button>
         </div>
       </form>
     </div>

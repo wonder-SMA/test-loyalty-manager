@@ -14,6 +14,9 @@ const CardListPage = observer(() => {
   const filterValue = useDebounce(searchValue, 300);
 
   useEffect(() => {
+    if (filterValue === '') {
+      store.setCards();
+    }
     store.setFilterForCards(filterValue);
   }, [filterValue]);
 
@@ -25,7 +28,7 @@ const CardListPage = observer(() => {
     <div className={classes['card-list-page']}>
       <h1>Бонусные карты: найдено {store.filteredCards.length} шт.</h1>
       <Search searchValue={searchValue} handleSearch={handleSearch} />
-      <CardList />
+      <CardList cards={store.filteredCards} />
     </div>
   );
 });

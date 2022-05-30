@@ -11,7 +11,7 @@ export const getOneCard = async (field, value) => {
 };
 
 export const getReceipts = async (from, to, cardUuid) => {
-  const { data } = await $authHost.get(`receipt/?from=${from}&to=${to}&cardUuid=${cardUuid}`);
+  const { data } = await $authHost.get(`receipt/?from=${from}&to=${to}&cardUuid=${cardUuid ? cardUuid : ''}`);
   return data;
 };
 

@@ -2,14 +2,11 @@ import React from 'react';
 
 import Transaction from '../Transaction';
 
-const TransactionList = ({ isFiltered, allTransactionsForCard, transactionsForPeriodForCard }) => {
+const TransactionList = ({ transactions }) => {
   return (
     <ul>
-      {isFiltered
-        ? transactionsForPeriodForCard.map(transaction =>
-          <Transaction key={transaction.uuid} {...transaction} />
-        )
-        : allTransactionsForCard.map(transaction =>
+      {
+        transactions.map(transaction =>
           <Transaction key={transaction.uuid} {...transaction} />
         )
       }

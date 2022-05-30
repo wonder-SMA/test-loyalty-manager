@@ -1,11 +1,11 @@
 import axios from 'axios';
 
 const $authHost = axios.create({
-  baseURL: 'https://bonus-test.evoapp.ru/api/3rdparty/'
+  baseURL: process.env.REACT_APP_API_URL
 });
 
 const authInterceptor = config => {
-  config.headers.authorization = '435b7c13-ecaf-4265-83c8-186cca3242cc';
+  config.headers.authorization = process.env.REACT_APP_API_KEY;
   return config;
 };
 

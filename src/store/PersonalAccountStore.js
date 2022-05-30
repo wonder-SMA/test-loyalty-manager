@@ -6,20 +6,12 @@ class PersonalAccountStore {
   _card = {};
   _cards = [];
   _searchValue = '';
-  _receiptCount = 0;
-  _receiptsForPeriod = [];
-  _receiptsForPeriodForCard = [];
-  _transactionCount = 0;
-  _transactionsForPeriodForCard = [];
-  _allReceipts = [];
-  _allReceiptsForCard = [];
-  _allTransactionsForCard = [];
+  _receipts = [];
+  _transactions = [];
   _isShowingButtonUp = false;
 
   constructor() {
     makeAutoObservable(this);
-    getCards().then(cards =>
-      runInAction(() => this._cards = cards));
   }
 
   get card() {
@@ -27,94 +19,9 @@ class PersonalAccountStore {
   }
 
   setCard(id) {
-    this._card = getOneCard('number', id)
+    getOneCard('number', id)
       .then(card => {
         runInAction(() => this._card = card);
-      })
-      .then(() => {
-        runInAction(() => this.setAllReceiptsForCard(this._card.uuid));
-      })
-      .then(() => {
-        runInAction(() => this.setAllTransactionsForCard(this._card.uuid));
-      });
-  }
-
-  clearForCard() {
-    this._card = {};
-    this._allReceiptsForCard = [];
-    this._allTransactionsForCard = [];
-  }
-
-  setFilterForCards(value) {
-    this._searchValue = value;
-  }
-
-  get filteredCards() {
-    if (this._searchValue.length > 0) {
-      return this._cards.filter((card) =>
-        card.number.includes(this._searchValue),
-      );
-    }
-    return this._cards;
-  }
-
-  setReceiptCount(count) {
-    this._receiptCount = count;
-  }
-
-  get shortReceiptsForCard() {
-    return this.allReceiptsForCard.slice(0, this._receiptCount);
-  }
-
-  get allReceiptsForCard() {
-    return this._allReceiptsForCard;
-  }
-
-  setAllReceiptsForCard(uuid) {
-    getReceipts(1, new Date().getTime(), uuid)
-      .then(receipts => {
-        runInAction(() => this._allReceiptsForCard = [...receipts]);
-      });
-  }
-
-  get receiptsForPeriodForCard() {
-    return this._receiptsForPeriodForCard;
-  }
-
-  setReceiptsForPeriodForCard(from, to, uuid) {
-    getReceipts(from, to, uuid)
-      .then(receipts => {
-        runInAction(() => this._receiptsForPeriodForCard = [...receipts]);
-      });
-  }
-
-  setTransactionCount(count) {
-    this._transactionCount = count;
-  }
-
-  get shortTransactionsForCard() {
-    return this.allTransactionsForCard.slice(0, this._transactionCount);
-  }
-
-  get allTransactionsForCard() {
-    return this._allTransactionsForCard;
-  }
-
-  setAllTransactionsForCard(uuid) {
-    getTransactions(1, new Date().getTime(), uuid)
-      .then(transaction => {
-        runInAction(() => this._allTransactionsForCard = [...transaction]);
-      });
-  }
-
-  get transactionsForPeriodForCard() {
-    return this._transactionsForPeriodForCard;
-  }
-
-  setTransactionsForPeriodForCard(from, to, uuid) {
-    getTransactions(from, to, uuid)
-      .then(receipts => {
-        runInAction(() => this._transactionsForPeriodForCard = [...receipts]);
       });
   }
 
@@ -122,33 +29,59 @@ class PersonalAccountStore {
     return this._cards;
   }
 
-  get allReceipts() {
-    return this._allReceipts;
+  setCards() {
+    getCards().then(cards =>
+      runInAction(() => this._cards = cards));
   }
 
-  setAllReceipts() {
-    this._cards.forEach(card => {
-      getReceipts(1, new Date().getTime(), card.uuid)
-        .then(receipts => {
-          runInAction(() => this._allReceipts = [...this._allReceipts, ...receipts]);
-        });
-    });
+  setFilterForCards(value) {
+    this._searchValue = value;
   }
 
-  get receiptsForPeriod() {
-    return this._receiptsForPeriod;
-  }
-
-  setReceiptsForPeriod(from, to) {
-    if (this._receiptsForPeriod.length !== 0) {
-      this._receiptsForPeriod = [];
+  get filteredCards() {
+    if (this._searchValue.length) {
+      return this._cards.filter((card) =>
+        card.number.includes(this._searchValue),
+      );
     }
-    this._cards.forEach(card => {
-      getReceipts(from, to, card.uuid)
-        .then(receipts => {
-          runInAction(() => this._receiptsForPeriod = [...this._receiptsForPeriod, ...receipts]);
-        });
-    });
+    return this._cards;
+  }
+
+  get receipts() {
+    return this._receipts;
+  }
+
+  setReceipts(params) {
+    const { from = 0, to = +new Date(), uuid = '' } = params;
+    getReceipts(from, to, uuid)
+      .then(receipts => {
+        runInAction(() => this._receipts = receipts);
+      });
+  }
+
+  clearReceipts() {
+    this._receipts = [];
+  }
+
+  get transactions() {
+    return this._transactions;
+  }
+
+  setTransactions(params) {
+    const { from = 0, to = +new Date(), uuid } = params;
+    getTransactions(from, to, uuid)
+      .then(transactions => {
+        runInAction(() => this._transactions = transactions);
+      });
+  }
+
+  clearTransactions() {
+    this._transactions = [];
+  }
+
+  clearLists() {
+    this.clearReceipts();
+    this.clearTransactions();
   }
 
   get isShowingButtonUp() {

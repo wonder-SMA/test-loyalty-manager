@@ -13,7 +13,6 @@
 
 .card-many {
 	@include cardTemplate;
-	
 	a {
 		text-decoration: none;
 		color: black;
@@ -21,7 +20,7 @@
 	}
 	
 	&:active {
-		background-color: darken(rgb(239, 239, 239), 10%);
+		background-color: lightcyan;
 	}
 	
 	@media screen and (min-width: 1024px) {
